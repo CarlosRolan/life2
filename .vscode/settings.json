@@ -1,0 +1,4 @@
+{
+ "python.defaultInterpreterPath": "${workspaceFolder}/life2-back/bin/python",
+ "python.terminal.activateEnvironment": true,
+}
