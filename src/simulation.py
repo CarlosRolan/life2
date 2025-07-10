@@ -3,6 +3,7 @@ from typing import List, Tuple, Dict, Optional
 
 from .grid import Grid
 from .organism import Organism
+from .gridcell import GridCell
 
 class Simulation:
     """
@@ -29,9 +30,9 @@ class Simulation:
             y = random.randint(0, height - 1)
             cell = self.grid.get_cell(x, y)
 
-            if cell.is_free():
+            if cell.is_free:
                 org = Organism(id_=placed, position=(x, y))
-                cell.occupy(org)
+                cell.places_organism(org)
                 self.organisms.append(org)
                 placed += 1
 
@@ -41,8 +42,14 @@ class Simulation:
         a three-phase model to resolve all organism actions.
         """
         intentions: Dict[int, Tuple[int, int]] = self._evaluate_intentions()
+        print("SETTING INTENTIOS-------------------")
+        print(intentions)
         confirmed_actions: Dict[int, Tuple[int, int]] = self._resolve_conflicts(intentions)
+        print("COMFIRMED ACTIONS-------------------")
+        print(confirmed_actions)
         self._apply_actions(confirmed_actions)
+        print("APPLYING ACTIONS to GRID")
+        self.print_grid()
 
     def _evaluate_intentions(self) -> Dict[int, Tuple[int, int]]:
         """
@@ -56,9 +63,11 @@ class Simulation:
         for org in self.organisms:
             x, y = org.position
             neighbors = self._get_adjacent_positions(x, y)
+            #print(self._get_surrounding_cells(neighbors))
+            print(neighbors)
             free_neighbors = [
                 pos for pos in neighbors
-                if self.grid.get_cell(*pos).is_free()
+                if self.grid.get_cell(*pos).is_free
             ]
             if free_neighbors:
                 target = random.choice(free_neighbors)
@@ -101,13 +110,15 @@ class Simulation:
             org = self._get_organism_by_id(org_id)
             if org is None:
                 continue
+            #Eliminas el organismo de la celda
             old_x, old_y = org.position
-            self.grid.get_cell(old_x, old_y).vacate()
-
+            self.grid.get_cell(old_x, old_y).empty()
+            
+            #Colocamos el organismo en la nueva celda
             new_x, new_y = new_pos
-            self.grid.get_cell(new_x, new_y).occupy(org)
+            self.grid.get_cell(new_x, new_y).places_organism(org)
             org._position = (new_x, new_y)  # internal update
-
+    
     def _get_adjacent_positions(self, x: int, y: int) -> List[Tuple[int, int]]:
         """
         Returns a list of valid orthogonal neighbor positions.
@@ -127,6 +138,36 @@ class Simulation:
             (nx, ny) for nx, ny in candidates
             if 0 <= nx < self.grid.width and 0 <= ny < self.grid.height
         ]
+
+    def _get_adjacent_positions2(self, position: Tuple[int, int]) -> List[Tuple[int, int]]:
+        """
+        Returns a list of all 8 adjacent positions (including diagonals)
+        that are within bounds of the grid.
+        """
+        x, y = position
+        directions = [
+            (-1, -1), (0, -1), (1, -1),
+            (-1,  0),          (1,  0),
+            (-1,  1), (0,  1), (1,  1)
+        ]
+
+        adjacent = [
+            (x + dx, y + dy)
+            for dx, dy in directions
+            if 0 <= x + dx < self._width and 0 <= y + dy < self._height
+        ]
+        return adjacent
+    
+    def _get_surrounding_cells(self, adjacent_positions: List[Tuple[int, int]] = None, cell_pos:Tuple[int, int] = None):
+        list_surr_cells: List[GridCell] = []
+        if cell_pos == None:
+            for pos in adjacent_positions:
+                surr_cell = self.grid.get_cell(pos[0], pos[1])
+                list_surr_cells.append(surr_cell)
+            return list_surr_cells
+        else:
+            return self._get_surrounding_cells(self._get_adjacent_positions(cell_pos))
+            
 
     def _get_organism_by_id(self, org_id: int) -> Optional[Organism]:
         """
@@ -152,6 +193,8 @@ class Simulation:
             row = ""
             for x in range(self.grid.width):
                 cell = self.grid.get_cell(x, y)
-                row += f"{cell.organism.id if not cell.is_free() else '.':>3}"
+                row += f"{cell.organism.id if not cell.is_free else '.':>3}"
             print(row)
         print()
+
+

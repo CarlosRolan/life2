@@ -6,7 +6,7 @@ class Grid:
     Represents the simulation grid as a 2D array of GridCell objects.
     """
 
-    def __init__(self, width: int, height: int) -> None:
+    def __init__(self, width_: int, height_: int) -> None:
         """
         Initializes a new grid of given dimensions, filling it with empty cells.
 
@@ -14,13 +14,13 @@ class Grid:
             width (int): Number of columns in the grid.
             height (int): Number of rows in the grid.
         """
-        self._width = width
-        self._height = height
-        self._cells = np.full((height, width), fill_value=None, dtype=object)
+        self._width = width_
+        self._height = height_
+        self._cells = np.full((height_, width_), fill_value=None, dtype=object)
 
-        for y in range(height):
-            for x in range(width):
-                self._cells[y, x] = GridCell()
+        for y in range(height_):
+            for x in range(width_):
+                self._cells[y, x] = GridCell((x,y))
 
     @property
     def width(self) -> int:

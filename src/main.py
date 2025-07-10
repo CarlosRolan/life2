@@ -17,11 +17,11 @@ def write_grid_to_file(sim: Simulation, turn: int):
         for row in sim.grid.cells:
             line = ""
             for cell in row:
-                line += "O " if not cell.is_free() else ". "
+                line += f"{cell.organism.id} " if not cell.is_free else ". "
             f.write(line.rstrip() + "\n")
 
 def main():
-    sim = Simulation(width=40, height=20, num_organisms=50)
+    sim = Simulation(width=10, height=10, num_organisms=2)
     turn = 0
 
     print(f"Simulación iniciada. Visualiza el archivo:\n  {OUTPUT_PATH}")
