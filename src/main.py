@@ -14,26 +14,17 @@ OUTPUT_PATH = os.path.join(parent, "simulation_output.txt")
 def write_grid_to_file(sim: Simulation, turn: int):
     with open(OUTPUT_PATH, "w") as f:
         f.write(f"--- Turn {turn} ---\n\n")
-        for row in sim.grid.cells:
-            line = ""
-            for cell in row:
-                line += f"{cell.organism.id} " if not cell.is_free else ". "
-            f.write(line.rstrip() + "\n")
+        f.write(sim.grid.str_state)
 
 def main():
-    sim = Simulation(width=10, height=10, num_organisms=2)
-    turn = 0
+    sim = Simulation()
 
-    print(f"Simulación iniciada. Visualiza el archivo:\n  {OUTPUT_PATH}")
     print("Pulsa ENTER para avanzar al siguiente turno. Ctrl+C para salir.\n")
-
-    write_grid_to_file(sim, turn)
-
+    
     while True:
-        input(f"--- Turno {turn + 1} --- ENTER para continuar ---")
-        sim.next_turn()
-        turn += 1
-        write_grid_to_file(sim, turn)
+        input(f"--- Turno {sim._turn + 1} --- ENTER para continuar ---")
+        sim.pass_turn()
+        write_grid_to_file(sim, sim._turn)
 
 if __name__ == "__main__":
     main()
