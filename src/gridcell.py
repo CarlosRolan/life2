@@ -46,39 +46,26 @@ class GridCell:
     
     @property
     def cmd_color(self):
-        color_map = {
-            "YELLOW": "\033[33m",
-            "WHITE": "\033[37m",
-            "GREEN": "\033[32m",
-            "RED":  "\033[31m",
-            "CYAN":  "\033[36m",
-            "GREY": "\033[37m",
-            "BLUE": "\033[34m",
-            "PURPLE": "\033[35m"
-        }
-        
-        
-        
         if (self._state == CellState.FREE):
-            return color_map["WHITE"]
+            return ColorCmd.WHITE
         elif (self._state == CellState.INTENDED):
-            return color_map["WHITE"]
+            return ColorCmd.WHITE
         elif (self._state == CellState.CHOSEN):
-            return color_map["CYAN"]
+            return ColorCmd.CYAN
         elif (self._state == CellState.CONFLICT):
-            return color_map["RED"]
+            return ColorCmd.RED
         elif (self._state == CellState.RESOLVED):
-            return color_map["GREEN"]
+            return ColorCmd.GREEN
         elif (self._state == CellState.MOVING_OUT):
-            return color_map["YELLOW"]
+            return ColorCmd.YELLOW
         elif self._state == CellState.LOOSER:
-            return color_map["BLUE"]
+            return ColorCmd.BLUE
         elif self._state == CellState.WINNER:
-            return color_map["GREEN"]
+            return ColorCmd.GREEN
         elif self._state == CellState.BLOCKED:
-            return color_map["PURPLE"]
+            return ColorCmd.PURPLE
         else:
-            return color_map["WHITE"]
+            return ColorCmd.WHITE
     
     property
     def symb(self):
@@ -86,8 +73,7 @@ class GridCell:
     
     @property
     def cmd_symb(self):
-        RESET = "\033[0m"
-        return f" {self.cmd_color}{self._symbol}{RESET}"
+        return f" {self.cmd_color}{self._symbol}{ColorCmd.RESET}"
 
     @property
     def position(self):
@@ -129,7 +115,7 @@ class GridCell:
     
     def set_cmd_symbol(self, org_pos=None, cmd_symbol: str = None):
         if org_pos:
-            print(f"DEBUG calculating simbol for state={self._state} and old_symb={self._symbol}")
+            debug(f"Calculating simbol for state={self._state} and old_symb={self._symbol}")
             
         # Si le paso un simbolo directo no calcula nada lo setea y punto
         if not cmd_symbol is None:
@@ -170,7 +156,7 @@ class GridCell:
         new_symbol = DIRECTIONS.get((dx, dy), "?")
         
         if not self._symbol == ".":
-                print(f"~~SIMBOL COMBINATION~~[{self._symbol}+{new_symbol}]")
+                debug(f"~~SIMBOL COMBINATION~~[{self._symbol}+{new_symbol}]")
                 #TODO hacer las combinaciones aqui
         
         self._symbol = new_symbol
@@ -191,7 +177,7 @@ class GridCell:
         self._organism = organism
         self._organism._position = self.position
         self._state = CellState.NOT_FREE
-        self.set_cmd_symbol(cmd_symbol=f"o")
+        self.set_cmd_symbol(cmd_symbol=f"{self._organism.id}")
     
     def set_cell_state(self, new_state: CellState, origin = None):
         #TODO sacar colores a utils

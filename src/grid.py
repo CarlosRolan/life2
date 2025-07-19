@@ -13,7 +13,7 @@ class Grid:
     """
     
     # CONSTANTS
-    _SCALE = 50
+    _SCALE = 30
     _DEFAULT_WIDTH = _SCALE
     _DEFAULT_HEIGHT = _SCALE
     _DEFAULT_ORGS_DIAGONAL = [Organism(i, (i,i)) for i in range(_SCALE)]

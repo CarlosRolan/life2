@@ -13,7 +13,7 @@ OUTPUT_PATH = os.path.join(parent, "simulation_output.txt")
 
 def write_grid_to_file(sim: Simulation, turn: int):
     with open(OUTPUT_PATH, "w") as f:
-        f.write(f"--- Turn {turn} ---\n\n")
+        f.write(f"--- Turn {sim._turn} ---\n\n")
         f.write(sim.grid.str_state)
 
 def main():
