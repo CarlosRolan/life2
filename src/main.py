@@ -1,12 +1,14 @@
 import sys
 import os
 
+from src.logic.gridcell import CellState, GridCell
+
 # Añadir el directorio raíz del proyecto al path
 current = os.path.dirname(os.path.abspath(__file__))
 parent = os.path.dirname(current)
 sys.path.insert(0, parent)
 
-from .simulation import Simulation
+from .logic.simulation import Simulation
 
 # Ruta al archivo donde se escribirá el grid
 OUTPUT_PATH = os.path.join(parent, "simulation_output.txt")
@@ -14,21 +16,15 @@ OUTPUT_PATH = os.path.join(parent, "simulation_output.txt")
 def write_grid_to_file(sim: Simulation, turn: int):
     with open(OUTPUT_PATH, "w") as f:
         f.write(f"--- Turn {sim._turn} ---\n\n")
-        f.write(sim.grid.str_state)
+        f.write(sim._grid.str_state)
 
 def main():
     sim = Simulation()
-
     print("Pulsa ENTER para avanzar al siguiente turno. Ctrl+C para salir.\n")
     
     while True:
         input(f"--- Turno {sim._turn + 1} --- ENTER para continuar ---")
         sim.pass_turn()
-        write_grid_to_file(sim, sim._turn)
-
-if __name__ == "__main__":
-    main()
-
 
 # -------------------------------------------------------
 # Allow both direct execution and import as module

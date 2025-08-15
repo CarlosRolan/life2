@@ -1,6 +1,16 @@
+from enum import Enum
 from typing import Tuple
 
-from src.gridcell import CellState, GridCell
+from src.logic.gridcell import CellState, GridCell
+
+class OrgState(Enum):
+    READY = 0
+    MOVING_OUT = 1
+    BLOCKED = 2
+    WINNER = 3
+    LOSER = 4
+    
+    
 
 class Organism:
     """
@@ -11,6 +21,9 @@ class Organism:
     def __init__(self, id_: int, position: Tuple[int, int]) -> None:
         self._id = id_
         self._position = position
+        self._state: OrgState = OrgState.READY
+        #Para el futuro
+        self._cellRef: GridCell = None  # Reference to the cell it occupies, if any
 
     @property
     def id(self) -> int:
@@ -33,7 +46,7 @@ class Organism:
         return self._position
 
     def __repr__(self) -> str:
-        return f"ORG(id={self._id}, pos={self._position})"
+        return f"_ORG({self._id}, {self._position})_"
     
     def move_to(self, cell: GridCell):
         if cell._state == CellState.RESOLVED:

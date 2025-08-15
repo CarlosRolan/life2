@@ -2,8 +2,8 @@ import random
 from typing import List, Optional, Tuple
 import numpy as np
 
-from src.cmd import ColorCmd, debug
-from src.organism import Organism
+from src.cmd.cmd import ColorCmd, my_debug
+from src.organism.organism import Organism
 from .gridcell import CellState, GridCell
 
 class Grid:
@@ -13,7 +13,7 @@ class Grid:
     """
     
     # CONSTANTS
-    _SCALE = 30
+    _SCALE = 10
     _DEFAULT_WIDTH = _SCALE
     _DEFAULT_HEIGHT = _SCALE
     _DEFAULT_ORGS_DIAGONAL = [Organism(i, (i,i)) for i in range(_SCALE)]
@@ -66,21 +66,6 @@ class Grid:
     @property
     def cells(self)->dict:
         return self._cells
-    
-    @property
-    def str_state(self):
-        rows = []
-        for y in range(self.height):
-            row = ''
-            for x in range(self.width):
-                key = self._get_key_from_pos((y,x))
-                cell: GridCell = self._cells.get(key)
-                if cell is None:
-                    row += "."
-                    continue
-                row += cell.symb()
-            rows.append(row)
-        return '\n'.join(rows)
     
     @property
     def cmd_state(self):
@@ -167,17 +152,6 @@ class Grid:
             
         return list_surr_cells
     
-    def get_avaliable_cells(self, origin):
-        list_surr_cells: List[GridCell] = self._get_surrounding_cells(origin)
-        list_avaliable_cells = []
-
-        debug("DEBUG changing all AVALIBLE cells to INTENDED")
-        for cell in list_surr_cells:
-            if cell.can_be_intended:
-                cell.set_cell_state(CellState.INTENDED, origin)
-                list_avaliable_cells.append(cell)
-        return list_avaliable_cells
-    
     def _get_key_from_pos(self, position: Tuple[int,int] = (0,0))-> str:
         return f"{position[0]}_{position[1]}"
             
@@ -191,10 +165,3 @@ class Grid:
         self.print_state()
         print("FASE-0-END")
         
-            
-    def clean_for_next_turn(self):
-        for c in self._cells.values():
-            if isinstance(c, GridCell):
-                if c.is_free:
-                    c.clean()
-        self.print_state()
