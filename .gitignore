@@ -1,4 +1,7 @@
 simulation_output.txt
-life2-back/*/*
+life2-back/
+# Virtual environment for the project
+/life2-back/
+/life2-back/*/*
 .pycache
 life2-back/*/*/*/*/*
