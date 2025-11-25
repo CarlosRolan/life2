@@ -1,4 +1,8 @@
 {
- "python.defaultInterpreterPath": "${workspaceFolder}/life2-back/bin/python",
- "python.terminal.activateEnvironment": true,
+    "python.defaultInterpreterPath": "${workspaceFolder}/life2-back/bin/python",
+    "python.terminal.activateEnvironment": true,
+    // Para tener el cache en una carpeta en la raiz
+    "terminal.integrated.env.linux": {
+        "PYTHONPYCACHEPREFIX": "${workspaceFolder}/.pycache"
+    }
 }
