@@ -117,11 +117,11 @@ En `.vscode/launch.json`:
     "configurations": [
         {
             "name": "Run life2 backend",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
 
-            "module": "src.main",                   
-            "cwd": "${workspaceFolder}",            
+            "module": "src.main",
+            "cwd": "${workspaceFolder}",
             "python": "${workspaceFolder}/life2-back/bin/python",
 
             "env": {
