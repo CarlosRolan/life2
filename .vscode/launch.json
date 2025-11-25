@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run life2 backend",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "src.main",
+            "cwd": "${workspaceFolder}",
+            "python": "${workspaceFolder}/life2-back/bin/python",
+            "env": {
+                "PYTHONPYCACHEPREFIX": "${workspaceFolder}/.pycache"
+            },
+            "console": "integratedTerminal"
+        }
+    ]
+}
