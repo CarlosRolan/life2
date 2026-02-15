@@ -41,7 +41,9 @@ class Grid:
         self.place_orgs_init()
         #TODO tener un array seria interesante?
         
-    
+    @property
+    def orgs(self) -> List[Organism]:
+        return self._organisms
         
     @property
     def width(self) -> int:

@@ -219,3 +219,6 @@ def apply_state_transition(cell: GridCell, candidate_state: CellState,
         handler(cell, old_state, candidate_state, computed_state, org_pos)
 
     return computed_state
+
+def block_org(cell: GridCell):
+    apply_state_transition(cell, CellState.BLOCKED) # NOT_FREE -> BLOCKED
